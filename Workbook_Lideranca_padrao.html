@@ -1,0 +1,1883 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workbook Liderança Eficaz – Haggai Brasil · PADRÃO VISUAL</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+    <style>
+        /* ── RESET & BASE ── */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #141414;
+            font-family: var(--font-base);
+            color: var(--text);
+        }
+
+        /* ── PRINT CONFIG ── */
+        @page {
+            size: 148mm 210mm;
+            margin: 0;
+        }
+
+        @media print {
+            body {
+                background: white !important;
+            }
+
+            .nav-bar,
+            .twk-panel,
+            .no-print {
+                display: none !important;
+            }
+
+            .stage {
+                padding: 0 !important;
+                gap: 0 !important;
+                display: block !important;
+            }
+
+            .page {
+                box-shadow: none !important;
+                margin: 0 !important;
+                page-break-after: always;
+                break-after: page;
+            }
+        }
+
+        /* ── LAYOUT ── */
+        .stage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            gap: 30px;
+        }
+
+        /* Fixed A5 Container */
+        .page {
+            width: 148mm;
+            height: 210mm;
+            background: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+
+        /* Useful Area & Mirrored Margins 
+    Top: 1.3cm, Bottom: 1.3cm, Internal: 1.8cm, External: 1.1cm
+    Odd: Left=Internal(1.8), Right=External(1.1)
+    Even: Left=External(1.1), Right=Internal(1.8)
+*/
+        .pg {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pg-odd {
+            padding: 0 1.1cm 0 1.8cm;
+        }
+
+        .pg-even {
+            padding: 0 1.8cm 0 1.1cm;
+        }
+
+        /* Components staying inside Useful Area */
+        .pg-hdr {
+            height: calc(1.3cm + 22px);
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            background: #001f33;
+            padding-bottom: 5px;
+            margin-bottom: 6px;
+            margin-top: 0;
+            flex-shrink: 0;
+        }
+
+        .pg-odd .pg-hdr {
+            margin-left: -1.8cm;
+            margin-right: -1.1cm;
+            padding-left: 1.8cm;
+            padding-right: 1.1cm;
+        }
+
+        .pg-even .pg-hdr {
+            margin-left: -1.1cm;
+            margin-right: -1.8cm;
+            padding-left: 1.1cm;
+            padding-right: 1.8cm;
+        }
+
+        .pg-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .pg-ftr {
+            margin-top: auto;
+            border-top: 1px solid #d8ccbc;
+            padding-top: 2px;
+            padding-bottom: 1.3cm;
+            display: flex;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* ── COLOR TOKENS & TYPOGRAPHY ── */
+        :root {
+            /* ── Cores de Marca ── */
+            --navy:        #002B49;
+            --navy-rgb:    0, 43, 73;
+            --navy-dark:   #001f33;
+            --navy-light:  rgba(0, 43, 73, 0.06);
+            --amber:       #e07b2a;
+            --amber-rgb:   224, 123, 42;
+            --amber-light: rgba(224, 123, 42, 0.07);
+            --gold:        #d4a017;
+            --gold-rgb:    212, 160, 23;
+            --gold-light:  rgba(212, 160, 23, 0.07);
+            --forest:      #3d7a35;          /* verde botânico — 3º item em listas */
+            --forest-light: rgba(61, 122, 53, 0.07);
+
+            /* ── Neutros ── */
+            --text:        #2c2c2c;
+            --muted:       #666;
+            --slate:       #475569;
+            --bg:          #fdfaf6;
+            --warm:        #f5ede0;          /* creme quente — fundo de tabelas/caixas */
+            --divider:     #d8ccbc;          /* linha separadora */
+
+            /* ── Tipografia ── */
+            --font-base:    'Source Sans 3', sans-serif;
+            --font-heading: 'Cormorant Garamond', serif;
+            --font-mono:    'DM Mono', monospace;
+        }
+
+        /* ── TYPOGRAPHY ── */
+        .tag {
+            font-family: var(--font-base);
+            font-size: 14.7px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--amber);
+        }
+
+        .h1 {
+            font-family: var(--font-heading);
+            font-size: 34px;
+            line-height: 1.1;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .h1-sm {
+            font-size: 34px;
+        }
+
+        .subtitle {
+            font-family: var(--font-base);
+            font-size: 14.7px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .body {
+            font-size: 12px;
+            line-height: 1.45;
+            color: var(--text);
+        }
+
+        .small-note {
+            font-size: 9px;
+            color: #888;
+            line-height: 1.4;
+            background: none;
+            padding: 0;
+        }
+
+        .pg-odd .small-note {
+            text-align: left;
+        }
+
+        .pg-even .small-note {
+            text-align: right;
+        }
+
+        /* ── COMPONENTS ── */
+        .divider {
+            border: none;
+            border-top: 1px solid #d8ccbc;
+        }
+
+        .hl-box {
+            background: var(--warm);
+            border-left: 3px solid var(--amber);
+            padding: 7px 10px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: var(--text);
+        }
+
+        .hl-box strong {
+            color: var(--navy);
+        }
+
+        .quote-block {
+            border-top: 2px solid var(--gold);
+            border-bottom: 2px solid var(--gold);
+            padding: 7px 4px;
+            text-align: center;
+            margin: 5px 0;
+        }
+
+        .quote-text {
+            font-family: var(--font-heading);
+            font-size: 14.5px;
+            font-style: italic;
+            color: var(--navy);
+            line-height: 1.45;
+        }
+
+        .quote-ref {
+            font-family: var(--font-base);
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .leader-item {
+            font-size: 13.3px;
+            line-height: 1.4;
+            color: var(--text);
+            padding: 5px 9px;
+            border-left: 2px solid var(--gold);
+            background: rgba(240, 170, 48, 0.06);
+        }
+
+        .leader-item > strong {
+            color: var(--navy);
+            font-size: 13.3px;
+            display: block;
+            margin-bottom: 1px;
+        }
+
+        .write-line {
+            border-bottom: 1px solid #d0c0a8;
+            height: 18px;
+        }
+
+        .refl-box {
+            border: 1.5px solid var(--navy);
+            padding: 8px 10px;
+            border-radius: 2px;
+        }
+
+        .refl-label {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 5px;
+        }
+
+        .check-sq {
+            width: 11px;
+            height: 11px;
+            border: 1.5px solid var(--navy);
+            flex-shrink: 0;
+            display: inline-block;
+        }
+
+        /* Tables */
+        .score-grid {
+            display: grid;
+            grid-template-columns: 1fr 52px;
+            gap: 1px;
+            background: #d0c0a8;
+            border: 1px solid #d0c0a8;
+        }
+
+        .sc-cell {
+            background: #fff;
+            padding: 4px 8px;
+            font-size: 12px;
+            line-height: 1.4;
+            color: var(--text);
+        }
+
+        .sc-num {
+            background: var(--warm);
+            padding: 4px 6px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--muted);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sc-hdr {
+            background: var(--navy) !important;
+            color: rgba(255, 255, 255, 0.75) !important;
+            font-family: var(--font-mono);
+            font-size: 9px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .cmp-grid {
+            display: grid;
+            grid-template-columns: 1fr 22px 1fr;
+            gap: 1px;
+            background: #d0c0a8;
+            border: 1px solid #d0c0a8;
+            font-size: 11.5px;
+        }
+
+        .cmp-hdr-a {
+            background: var(--navy);
+            color: #fff;
+            padding: 5px 7px;
+            font-family: var(--font-mono);
+            font-size: 8px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .cmp-hdr-n {
+            background: var(--amber);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .cmp-hdr-b {
+            background: var(--muted);
+            color: rgba(255, 255, 255, 0.85);
+            padding: 5px 7px;
+            font-family: 'DM Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .cmp-a {
+            padding: 4px 7px;
+            line-height: 1.35;
+            background: #fff;
+        }
+
+        .cmp-n {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            color: var(--amber);
+            font-weight: 700;
+            background: #fff;
+        }
+
+        .cmp-b {
+            padding: 4px 7px;
+            line-height: 1.35;
+            color: var(--muted);
+            background: #fff;
+        }
+
+        .dna-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .dna-table th {
+            padding: 4px;
+            font-family: 'DM Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .dna-th-l {
+            background: var(--navy);
+            color: #fff;
+        }
+
+        .dna-th-m {
+            background: var(--warm);
+            color: var(--muted);
+            font-size: 7px;
+        }
+
+        .dna-th-r {
+            background: var(--amber);
+            color: #fff;
+        }
+
+        .dna-table td {
+            font-size: 10px;
+            line-height: 1.35;
+            padding: 3px 4px;
+            border-bottom: 1px solid #ddd0be;
+        }
+
+        /* Header/Footer Elements */
+        .pg-hdr-lbl {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .pg-num {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            color: var(--gold);
+        }
+
+        .pg-ftr-brand {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .pg-ftr-num {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        .chk-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 7px;
+            font-size: 12px;
+            color: var(--text);
+            line-height: 1.45;
+        }
+
+        .case-item {
+            padding: 5px 9px;
+            background: var(--warm);
+            margin-bottom: 4px;
+        }
+
+        .case-tag {
+            font-family: 'DM Mono', monospace;
+            font-size: 8px;
+            color: var(--amber);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .case-text {
+            font-size: 11.5px;
+            line-height: 1.4;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .case-opts {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 2px;
+        }
+
+        .case-opt {
+            border: 1px solid var(--navy);
+            font-size: 8px;
+            padding: 2px 1px;
+            text-align: center;
+            color: var(--navy);
+            font-family: 'DM Mono', monospace;
+        }
+
+        .al-sec {
+            margin-bottom: 7px;
+        }
+
+        .al-title {
+            font-family: var(--font-heading);
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 2px;
+            padding-bottom: 2px;
+            border-bottom: 1px solid var(--gold);
+        }
+
+        .al-sub {
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--navy);
+            margin: 3px 0 1px;
+        }
+
+        .al-body {
+            font-size: 12px;
+            line-height: 1.5;
+            color: var(--text);
+        }
+
+        .al-ask {
+            font-size: 11px;
+            color: var(--amber);
+            font-style: italic;
+            margin-top: 2px;
+            line-height: 1.45;
+        }
+
+        .al-list {
+            list-style: none;
+            padding: 0;
+            margin: 1px 0;
+        }
+
+        .al-list li {
+            font-size: 12px;
+            padding: 1px 0 1px 12px;
+            position: relative;
+            color: var(--text);
+            line-height: 1.45;
+        }
+
+        .al-list li::before {
+            content: '›';
+            position: absolute;
+            left: 0;
+            color: var(--amber);
+            font-weight: 700;
+        }
+
+        .nav-bar,
+        .spread-container {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const Logo = ({ style }) => (
+            <img src="../docx_images/image1.png" alt="Haggai Brasil" style={style} />
+        );
+
+        const Page = ({ hdr, num, children }) => {
+            const parity = num % 2 === 0 ? 'pg-even' : 'pg-odd';
+            const isOdd = num % 2 !== 0;
+
+            return (
+                <div className={`page page-${num}`}>
+                    <div className={`pg ${parity}`}>
+                        <div className="pg-hdr" style={{ justifyContent: isOdd ? 'flex-end' : 'flex-start', gap: '12px' }}>
+                            {isOdd
+                                ? <><span className="pg-hdr-lbl">Matéria Liderança Eficaz</span><span className="pg-num">{String(num).padStart(2, '0')}</span></>
+                                : <><span className="pg-num">{String(num).padStart(2, '0')}</span><span className="pg-hdr-lbl">Matéria Liderança Eficaz</span></>
+                            }
+                        </div>
+                        <div className="pg-body">{children}</div>
+                        <div className="pg-ftr">
+                            <span className="pg-ftr-brand">Haggai Brasil</span>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const Lines = ({ n = 4 }) => (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {Array(n).fill(0).map((_, i) => <div key={i} className="write-line" />)}
+            </div>
+        );
+
+        // ─── PAGES ─────────────────────────────────────────────────────────────────
+
+        const P1_Cover = () => (
+            <div className="page page-1">
+                <div className="pg-cover" style={{ background: 'var(--navy)', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', padding: '36px 42px 30px 42px' }}>
+                    <div style={{ background: 'var(--amber)', height: 7, margin: '-36px -42px 24px -42px' }} />
+                    
+                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
+                        <Logo style={{ height: 90, filter: 'brightness(0) invert(1) opacity(0.85)' }} />
+                    </div>
+
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--amber)', marginBottom: 20, textAlign: 'center' }}>
+                        Curso Nacional de Liderança Avançada
+                    </div>
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center' }}>
+                        <div style={{ fontFamily: 'var(--font-base)', fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 8 }}>Apostila</div>
+                        <div className="h1" style={{ fontSize: '50px', color: '#fff', fontWeight: 700 }}>
+                            Liderança<br />
+                            <span style={{ color: 'var(--gold)' }}>Eficaz</span>
+                        </div>
+                    </div>
+                    <div style={{ textAlign: 'center' }}>
+                        <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.45)', marginBottom: 3 }}>Por</div>
+                        <div style={{ fontFamily: 'var(--font-heading)', fontSize: '17px', color: 'rgba(255,255,255,0.88)', fontWeight: 600, marginBottom: 28 }}>Ebenézer Bittencourt</div>
+                        <div style={{ borderTop: '1px solid rgba(255,255,255,0.12)', marginTop: 18 }}></div>
+                        <div style={{ marginTop: 22, textAlign: 'center', color: 'rgba(255,255,255,0.35)', fontSize: '7.5px', lineHeight: 1.4, fontFamily: 'var(--font-base)' }}>
+                            <strong>Copyright © 2022 Noutética Publicações.</strong> Nenhuma parte desta apostila pode ser reproduzida sem o consentimento prévio, por escrito, da publicadora, exceto por breves citações com indicação da fonte.<br />
+                            Este material foi produzido para uso exclusivo nos programas de treinamento do Haggai Institute Brasil.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+
+        const P2_Info = () => (
+            <div className="page page-2">
+                <div className="pg" />
+            </div>
+        );
+
+        const P3_LiderQueDeusQuer = () => (
+            <Page hdr="O Líder que Deus Quer" num={3}>
+                <div className="h1" style={{ marginBottom: '12px' }}>O Líder que Deus Quer</div>
+
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '12px' }}>
+                    <div style={{ flex: 1 }}>
+                        <div className="body" style={{ 
+                            fontSize: '12.5px', 
+                            lineHeight: 1.4, 
+                            color: '#334155', 
+                            fontStyle: 'italic', 
+                            textAlign: 'justify',
+                            borderLeft: '3px solid var(--gold)',
+                            background: 'linear-gradient(to right, rgba(212, 172, 13, 0.05), transparent)',
+                            padding: '10px 12px'
+                        }}>
+                            A Vontade de Deus é que o líder tenha um forte desejo de servir na liderança, tanto profissional quanto ministerial. Além do desejo, ele precisa cuidar de pessoas e aprender a estabelecer procedimentos.
+                        </div>
+                    </div>
+                    <div style={{ flex: 1.2 }}>
+                        <img src="../docx_images/image2.png" style={{ width: '100%', maxHeight: '120px', objectFit: 'contain' }} />
+                    </div>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', marginBottom: '10px' }}>
+                    {/* Item 1 */}
+                    <div style={{ 
+                        background: '#fff', 
+                        borderRadius: '6px', 
+                        padding: '8px 12px' 
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                            <div style={{ background: 'var(--amber)', color: '#fff', width: '20px', height: '20px', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '12px', flexShrink: 0 }}>1</div>
+                            <strong style={{ fontSize: '13px', color: 'var(--navy)', letterSpacing: '0.01em' }}>Um líder que DESEJA SERVIR na área de liderança.</strong>
+                        </div>
+                        <div className="body" style={{ fontSize: '12px', textAlign: 'justify', lineHeight: 1.4, color: '#334155', marginBottom: '6px' }}>
+                            O líder <i>aspira</i> servir e o Espírito Santo dispõe as oportunidades. <strong>Para aumentar seu desejo</strong> de liderar: (a) leia livros sobre liderança, (b) faça cursos sobre liderança e (c) aceite oportunidades de liderar – crescendo em suas responsabilidades.
+                        </div>
+                        <div className="small-note" style={{ 
+                            background: '#F8FAFC', 
+                            borderLeft: '2.5px solid var(--navy)', 
+                            padding: '6px 10px', 
+                            borderRadius: '0 4px 4px 0', 
+                            textAlign: 'justify',
+                            color: '#475569',
+                            fontFamily: 'var(--font-heading)',
+                            fontSize: '12.5px',
+                            fontStyle: 'italic'
+                        }}>
+                            • Fiel é a palavra: se alguém <span style={{ borderBottom: '1px solid var(--navy)' }}>aspira</span> ao episcopado, excelente obra <span style={{ borderBottom: '1px solid var(--navy)' }}>almeja</span> – 1 Tm 3.1.
+                        </div>
+                    </div>
+
+                    {/* Item 2 */}
+                    <div style={{ 
+                        background: '#fff', 
+                        borderRadius: '6px', 
+                        padding: '8px 12px' 
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                            <div style={{ background: 'var(--amber)', color: '#fff', width: '20px', height: '20px', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '12px', flexShrink: 0 }}>2</div>
+                            <strong style={{ fontSize: '13px', color: 'var(--navy)', letterSpacing: '0.01em' }}>Um líder que CUIDA DE PESSOAS.</strong>
+                        </div>
+                        <div className="body" style={{ fontSize: '12px', textAlign: 'justify', lineHeight: 1.4, color: '#334155', marginBottom: '6px' }}>
+                            <strong>Cuidar dos liderados</strong> envolve estar atento às suas necessidades individuais e coletivas, fornecer apoio, orientação e recursos além de mobilizá-los na execução da tarefa.
+                        </div>
+                        <div className="small-note" style={{ 
+                            background: '#F8FAFC', 
+                            borderLeft: '2.5px solid var(--navy)', 
+                            padding: '6px 10px', 
+                            borderRadius: '0 4px 4px 0', 
+                            textAlign: 'justify',
+                            color: '#475569',
+                            fontFamily: 'Cormorant Garamond, serif',
+                            fontSize: '12.5px',
+                            fontStyle: 'italic'
+                        }}>
+                            • Como <span style={{ borderBottom: '1px solid var(--navy)' }}>cuidará</span> da igreja de Deus? – 1 Tm 3.5. <span style={{ borderBottom: '1px solid var(--navy)' }}>Atendei</span> por vós e por todo o rebanho sobre o qual o Espírito Santo vos constituiu bispos – At 20.28.
+                        </div>
+                    </div>
+
+                    {/* Item 3 */}
+                    <div style={{ 
+                        background: '#fff', 
+                        borderRadius: '6px', 
+                        padding: '8px 12px' 
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                            <div style={{ background: 'var(--amber)', color: '#fff', width: '20px', height: '20px', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '12px', flexShrink: 0 }}>3</div>
+                            <strong style={{ fontSize: '13px', color: 'var(--navy)', letterSpacing: '0.01em' }}>Um líder que sabe PROCEDIMENTOS.</strong>
+                        </div>
+                        <div className="body" style={{ fontSize: '12px', textAlign: 'justify', lineHeight: 1.4, color: '#334155', marginBottom: '6px' }}>
+                            Deus espera que o líder não seja instável. Ele precisa conhecer processos decisórios e estabelecer procedimentos na condução da organização que lidera.
+                        </div>
+                        <div className="small-note" style={{ 
+                            background: '#F8FAFC', 
+                            borderLeft: '2.5px solid var(--navy)', 
+                            padding: '6px 10px', 
+                            borderRadius: '0 4px 4px 0', 
+                            textAlign: 'justify',
+                            color: '#475569',
+                            fontFamily: 'Cormorant Garamond, serif',
+                            fontSize: '12.5px',
+                            fontStyle: 'italic'
+                        }}>
+                            • Para que fiques ciente de como se deve <span style={{ borderBottom: '1px solid var(--navy)' }}>proceder</span> na casa de Deus – 1 Tm 3.15. Pois, se alguém não sabe <span style={{ borderBottom: '1px solid var(--navy)' }}>governar</span> a própria casa, como cuidará da igreja de Deus? – 1 Tm 3.5.
+                        </div>
+                    </div>
+                </div>
+            </Page>
+        );
+
+        const P4_Influencia = () => (
+            <Page hdr="Influência Intencional" num={4}>
+                <div className="h1">Influência Intencional</div>
+                <div className="body" style={{ marginBottom: '8px', textAlign: 'justify', fontSize: '12px' }}>
+                    Desenvolva as suas capacidades para influenciar intencionalmente a sua equipe rumo aos objetivos de Deus.
+                </div>
+
+                <div className="hl-box" style={{ padding: '6px 10px', marginBottom: '4px', background: '#FEF3E7', borderRadius: '4px' }}>
+                    <div className="body" style={{ fontSize: '12px', textAlign: 'justify' }}>
+                        <strong>Definição:</strong> Líder cristão é alguém com capacidade e responsabilidade dadas por Deus, para influenciar o povo de Deus,¹ rumo aos objetivos de Deus para este povo.
+                    </div>
+                    <div className="small-note" style={{ textAlign: 'right', background: 'none', padding: '0', marginTop: '1px' }}>
+                        — Dr. Robert Clinton
+                    </div>
+                </div>
+
+                <img src="../docx_images/image3.png" style={{ width: '100%', maxHeight: '202px', objectFit: 'contain', margin: '2px 0', clipPath: 'inset(0 0 0 10px)', mixBlendMode: 'multiply' }} />
+
+                <div style={{ marginTop: '4px' }}>
+                    <strong className="subtitle" style={{ display: 'block', color: 'var(--navy)', marginBottom: '4px', fontSize: '12px' }}>Quatro pontos importantes:</strong>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px' }}>
+                        {/* 1. Capacidades */}
+                        <div style={{ 
+                            background: 'rgba(0, 51, 102, 0.03)', 
+                            borderLeft: '3px solid var(--navy)', 
+                            borderRadius: '0 6px 6px 0', 
+                            padding: '6px 10px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '4px'
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <div style={{ background: 'var(--navy)', color: '#fff', width: '18px', height: '18px', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '11px', flexShrink: 0 }}>1</div>
+                                <strong style={{ fontSize: '12px', color: 'var(--navy)' }}>Capacidades</strong>
+                            </div>
+                            <span className="body" style={{ fontSize: '12px', lineHeight: '1.3', color: '#334155', textAlign: 'justify' }}>O líder tem capacidades inatas ou adquiridas que podem ser desenvolvidas.</span>
+                        </div>
+
+                        {/* 2. Responsabilidade */}
+                        <div style={{ 
+                            background: 'rgba(212, 172, 13, 0.05)', 
+                            borderLeft: '3px solid var(--amber)', 
+                            borderRadius: '0 6px 6px 0', 
+                            padding: '6px 10px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '4px'
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <div style={{ background: 'var(--amber)', color: '#fff', width: '18px', height: '18px', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '11px', flexShrink: 0 }}>2</div>
+                                <strong style={{ fontSize: '12px', color: 'var(--navy)' }}>Responsabilidade</strong>
+                            </div>
+                            <span className="body" style={{ fontSize: '12px', lineHeight: '1.3', color: '#334155', textAlign: 'justify' }}>Vem da organização. Sua autoridade final vem de Deus (Rm 13.1-7).</span>
+                        </div>
+
+                        {/* 3. Influência */}
+                        <div style={{
+                            background: 'var(--forest-light)',
+                            borderLeft: '3px solid var(--forest)',
+                            borderRadius: '0 6px 6px 0',
+                            padding: '6px 10px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '4px'
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <div style={{ background: 'var(--forest)', color: '#fff', width: '18px', height: '18px', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '11px', flexShrink: 0 }}>3</div>
+                                <strong style={{ fontSize: '12px', color: 'var(--navy)' }}>Influência</strong>
+                            </div>
+                            <span className="body" style={{ fontSize: '12px', lineHeight: '1.3', color: '#334155', textAlign: 'justify' }}>O líder exerce influência intencional para promover mudanças para melhor.</span>
+                        </div>
+
+                        {/* 4. Objetivos */}
+                        <div style={{
+                            background: 'var(--gold-light)',
+                            borderLeft: '3px solid var(--gold)',
+                            borderRadius: '0 6px 6px 0',
+                            padding: '6px 10px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '4px'
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <div style={{ background: 'var(--gold)', color: '#fff', width: '18px', height: '18px', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '11px', flexShrink: 0 }}>4</div>
+                                <strong style={{ fontSize: '12px', color: 'var(--navy)' }}>Objetivos</strong>
+                            </div>
+                            <span className="body" style={{ fontSize: '12px', lineHeight: '1.3', color: '#334155', textAlign: 'justify' }}>O líder precisa estar comprometido com os objetivos de Deus.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style={{ marginTop: 'auto' }}>
+                    <div className="small-note">
+                        ¹ Na definição original, “povo de Deus” se refere à igreja. Mas, na vida profissional, a definição se aplica a todos que estão sob sua influência, cristãos e não cristãos.
+                    </div>
+                </div>
+            </Page>
+        );
+
+        const P5_Autoavaliacao = () => {
+            const data = [
+                {
+                    id: 'A',
+                    color: '#002B49', // Navy
+                    bg: 'rgba(0,43,73,0.06)',
+                    q: 'Como está o seu HÁBITO de DESENVOLVER as suas próprias capacidades?',
+                    items: [
+                        'Conheço minhas aptidões naturais ou adquiridas.',
+                        'Sei usar bem o orçamento disponível.',
+                        'Sei mobilizar bem as pessoas do grupo.',
+                        'Busco estudar para meu desenvolvimento pessoal.'
+                    ],
+                    startNum: 1
+                },
+                {
+                    id: 'B',
+                    color: '#e07b2a', // Amber
+                    bg: 'rgba(224,123,42,0.07)',
+                    q: 'Como está o seu DESEJO de assumir a suas RESPONSABILIDADES como líder?',
+                    items: [
+                        'Reconheço que foi Deus que me colocou em liderança na profissão, família, igreja e sociedade.',
+                        'Assumo a liderança com alegria e seriedade.',
+                        'Continuo com o desejo de servir, sem me orgulhar de honras recebidas.'
+                    ],
+                    startNum: 5
+                },
+                {
+                    id: 'C',
+                    color: '#3d7a35', // Forest
+                    bg: 'rgba(61,122,53,0.07)',
+                    q: 'Como está a sua GARRA para INFLUENCIAR intencionalmente, promovendo mudanças para melhor?',
+                    items: [
+                        'Exerço minha influência de propósito e rejeito o hábito de apenas adiar indefinidamente.',
+                        'Estou comprometido a fazer uma diferença, provocando mudanças benéficas para todos.'
+                    ],
+                    startNum: 8
+                },
+                {
+                    id: 'D',
+                    color: '#d4a017', // Gold
+                    bg: 'rgba(212,160,23,0.07)',
+                    q: 'Como está o seu CONHECIMENTO dos OBJETIVOS DE DEUS para sua organização?',
+                    items: [
+                        'Reconheço que Deus tem objetivos para todas as profissões, de cristãos e não cristãos.',
+                        'Sei quais são os objetivos de Deus para minha organização ou profissão.'
+                    ],
+                    startNum: 10
+                }
+            ];
+
+            return (
+                <Page hdr="Autoavaliação" num={5}>
+                    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                        <div style={{ textAlign: 'center', marginBottom: '4px' }}>
+                            <div className="h1" style={{ marginBottom: '1px', color: 'var(--navy)' }}>Autoavaliação</div>
+                            <div style={{ fontSize: '12px', color: '#475569', fontWeight: 500 }}>
+                                Dê uma nota de 0 (baixa) a 10 (alta) para essas quatro áreas:
+                            </div>
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1 }}>
+                            {/* Modern Header Row */}
+                            <div style={{ 
+                                display: 'grid', 
+                                gridTemplateColumns: '1fr 80px', 
+                                background: 'var(--navy)', 
+                                color: '#fff', 
+                                borderRadius: '6px', 
+                                overflow: 'hidden' 
+                            }}>
+                                <div style={{ padding: '6px 16px', fontWeight: 'bold', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                    Quatro áreas de autoavaliação
+                                </div>
+                                <div style={{ 
+                                    padding: '6px', 
+                                    fontWeight: 'bold', 
+                                    fontSize: '11px', 
+                                    textAlign: 'center', 
+                                    background: 'rgba(255,255,255,0.1)',
+                                    textTransform: 'uppercase'
+                                }}>
+                                    Nota
+                                </div>
+                            </div>
+
+                            {/* Section Cards */}
+                            {data.map((row, idx) => (
+                                <div key={idx} style={{ 
+                                    display: 'grid', 
+                                    gridTemplateColumns: '1fr 80px', 
+                                    background: row.bg, 
+                                    borderRadius: '8px', 
+                                    border: `1px solid ${row.color}30`,
+                                    boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+                                    overflow: 'hidden'
+                                }}>
+                                    <div style={{ padding: '4px 10px', borderLeft: `4px solid ${row.color}` }}>
+                                        <div style={{ display: 'flex', gap: '8px', marginBottom: '4px' }}>
+                                            <span style={{ fontWeight: '900', fontSize: '12px', color: row.color, fontFamily: 'var(--font-mono)' }}>{row.id}.</span>
+                                            <div style={{ fontSize: '12px', fontWeight: 'bold', color: '#1E293B', lineHeight: 1.3 }}>
+                                                {row.q}
+                                            </div>
+                                        </div>
+                                        <div style={{ paddingLeft: '22px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                                            {row.items.map((item, i) => (
+                                                <div key={i} style={{ display: 'flex', gap: '8px', fontSize: '11px', color: '#475569', lineHeight: 1.25 }}>
+                                                    <span style={{ width: '18px', textAlign: 'right', flexShrink: 0, fontWeight: '700', color: '#94A3B8' }}>{row.startNum + i}.</span>
+                                                    <span>{item}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div style={{ 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        justifyContent: 'center',
+                                        background: 'rgba(255,255,255,0.4)',
+                                        borderLeft: '1px solid rgba(0,0,0,0.05)'
+                                    }}>
+                                        <div style={{ 
+                                            width: '40px', 
+                                            height: '24px', 
+                                            background: '#fff', 
+                                            border: `1.5px solid ${row.color}40`, 
+                                            borderRadius: '4px' 
+                                        }} />
+                                    </div>
+                                </div>
+                            ))}
+
+                            {/* Improve Section */}
+                            <div style={{ 
+                                marginTop: 'auto',
+                                padding: '8px 12px', 
+                                background: '#F8FAFC', 
+                                borderRadius: '8px',
+                                border: '1px dashed #CBD5E1'
+                            }}>
+                                <div style={{ fontWeight: 'bold', fontSize: '12px', color: 'var(--navy)', marginBottom: '4px' }}>
+                                    Escolha áreas em que você precisa melhorar:
+                                </div>
+                                <div style={{ borderBottom: '1px solid #E2E8F0', height: '14px', marginBottom: '4px' }}></div>
+                                <div style={{ borderBottom: '1px solid #E2E8F0', height: '14px' }}></div>
+                            </div>
+                        </div>
+
+                        <div className="small-note" style={{ marginTop: '4px', paddingTop: '4px' }}>
+                            (*) Use esse exercício com sua equipe uma vez por semestre como uma maneira de incentivar o autodesenvolvimento de cada um.
+                        </div>
+                    </div>
+                </Page>
+            );
+        };
+
+        const P6_GTVsEquipe = () => (
+            <Page hdr="G.T. versus Equipe" num={6}>
+                <div className="h1" style={{ marginBottom: '6px' }}>G.T. versus Equipe</div>
+                <div style={{ fontSize: '12px', color: 'var(--navy)', fontWeight: 600, marginBottom: '1px' }}>
+                    Você deve transformar o seu G.T. numa verdadeira EQUIPE
+                </div>
+                <div className="body" style={{ fontSize: '12px', marginBottom: '4px', lineHeight: 1.35 }}>
+                    <strong>Exercício:</strong> (a) Pense num grupo específico que você vai avaliar e (b) assinale com um "x" a coluna que melhor descreve o seu grupo.
+                </div>
+
+                <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: '1fr 24px 22px 24px 1fr', 
+                    gap: '1px', 
+                    background: '#d8ccbc', 
+                    border: '1px solid #d8ccbc',
+                    borderRadius: '4px',
+                    overflow: 'hidden'
+                }}>
+                    {/* Headers */}
+                    <div style={{ background: 'var(--navy)', color: '#fff', padding: '4px 10px', textAlign: 'center' }}>
+                        <div style={{ fontSize: '13.5px', fontWeight: 'bold' }}>EQUIPE</div>
+                        <div style={{ fontSize: '11px', opacity: 0.8, lineHeight: 1.15, marginTop: '1px', textAlign: 'center' }}>
+                            Comprometida com a visão, colaboração, interdependência e ótimo desempenho.
+                        </div>
+                    </div>
+                    <div style={{ background: 'var(--navy)', borderLeft: '1px solid rgba(255,255,255,0.1)' }}></div>
+                    <div style={{ background: 'var(--amber)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 'bold' }}></div>
+                    <div style={{ background: '#5F625F', borderRight: '1px solid rgba(255,255,255,0.1)' }}></div>
+                    <div style={{ background: '#5F625F', color: '#fff', padding: '4px 10px', textAlign: 'center' }}>
+                        <div style={{ fontSize: '13.5px', fontWeight: 'bold' }}>GRUPO DE TRABALHO</div>
+                        <div style={{ fontSize: '11px', opacity: 0.8, lineHeight: 1.15, marginTop: '1px', textAlign: 'center' }}>
+                            Envolvido na tarefa, pouca colaboração, independência/dependência, desempenho moderado.
+                        </div>
+                    </div>
+
+                    {/* Rows */}
+                    {[
+                        ['Todos sabem com clareza qual é o propósito e metas e têm compromisso em cumpri-los.', 'O propósito e as metas não são muito claros. Todos fazem o melhor possível, sem muito senso de direção.'],
+                        ['A divisão de trabalho combina com o perfil de cada um e há muita interdependência.', 'O trabalho não combina com o perfil das pessoas e há independência ou dependência.'],
+                        ['O líder sabe delegar com eficiência e sabedoria, e motiva o grupo a avançar.', 'O líder centraliza muita coisa nele mesmo e não é bem-sucedido em motivar as pessoas.'],
+                        ['Avaliamos tudo o que fazemos, sendo realistas e flexíveis quando necessário. Produzimos com eficiência.', 'Nossos métodos são confusos e raramente os avaliamos. Produzimos, mas poderíamos ser mais eficazes.'],
+                        ['O clima é harmonioso, não há fofocas, respeitamos as diferenças e sentimos que pertencemos uns aos outros.', 'O clima é um pouco tenso e existe muita fofoca por detrás. Mantemos uma certa distância.'],
+                        ['Temos reuniões animadas, com opiniões abertas. Resolvemos os conflitos e sinto que estamos melhorando.', 'Temos reuniões chatas, as pessoas não falam o que pensam. Os conflitos ficam camuflados e estamos piorando.'],
+                    ].map(([equipe, gt], i) => (
+                        <React.Fragment key={i}>
+                            <div style={{ background: '#fff', padding: '4px 10px', fontSize: '12px', lineHeight: 1.25, display: 'flex', alignItems: 'center', textAlign: 'justify' }}>{equipe}</div>
+                            <div style={{ background: 'var(--bg)', borderLeft: '1px solid #d8ccbc', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <div style={{ width: '12px', height: '12px', border: '1px solid #ccc', background: '#fff' }}></div>
+                            </div>
+                            <div style={{ background: '#f0e8db', fontSize: '12px', fontWeight: 'bold', color: 'var(--navy)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{i + 1}</div>
+                            <div style={{ background: 'var(--bg)', borderRight: '1px solid #d8ccbc', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <div style={{ width: '12px', height: '12px', border: '1px solid #ccc', background: '#fff' }}></div>
+                            </div>
+                            <div style={{ background: '#fff', padding: '4px 10px', fontSize: '12px', lineHeight: 1.25, color: '#666', display: 'flex', alignItems: 'center', textAlign: 'justify' }}>{gt}</div>
+                        </React.Fragment>
+                    ))}
+                </div>
+                <div className="small-note" style={{ marginTop: 'auto' }}>
+                    (*) Use esse exercício com sua equipe uma vez por semestre para incentivar o desenvolvimento das 6 funções que promovem o trabalho harmonioso.
+                </div>
+            </Page>
+        );
+
+        const P7_Transformacao = () => (
+            <Page hdr="Como Transformar o Grupo em Equipe" num={7}>
+                <div className="h1" style={{ marginBottom: '4px' }}>Como transformar o Grupo em Equipe?</div>
+                <div className="subtitle" style={{ fontSize: '11px', fontWeight: 400, color: 'var(--muted)', marginBottom: '2px' }}>
+                    Assinale com "x" os pontos em que você precisa melhorar
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                    {[
+                        {
+                            id: 'A',
+                            full: 'Aperfeiçoando a clareza de propósito e metas.',
+                            color: 'var(--navy)',
+                            items: [
+                                { n: 1, txt: 'Escrever com clareza a missão.' },
+                                { n: 2, txt: 'Fazer o grupo internalizar a missão.' },
+                                { n: 3, txt: 'Definir metas com a equipe.' }
+                            ]
+                        },
+                        {
+                            id: 'B',
+                            full: 'Aperfeiçoando a divisão de trabalho.',
+                            color: 'var(--amber)',
+                            items: [
+                                { n: 4, txt: 'Elaborar um organograma simples.' },
+                                { n: 5, txt: 'Escrever a descrição da tarefa.' }
+                            ]
+                        },
+                        {
+                            id: 'C',
+                            full: 'Aperfeiçoando a delegação.',
+                            color: '#3d7a35',
+                            items: [
+                                { n: 6, txt: 'Escolher a pessoa com o perfil adequado.' },
+                                { n: 7, txt: 'Conversar com ela sobre a descrição da tarefa.' },
+                                { n: 8, txt: 'Estabelecer datas de prestação de contas.' }
+                            ]
+                        },
+                        {
+                            id: 'D',
+                            full: 'Aperfeiçoando a avaliação.',
+                            color: 'var(--gold)',
+                            items: [
+                                { n: 9, txt: 'Ajudar pessoas a perderem o medo da avaliação.' },
+                                { n: 10, txt: 'Priorizar a identificação de falhas no processo antes de atribuí-las às pessoas.' },
+                                { n: 11, txt: 'Decidir quais ideias novas serão usadas.' },
+                                { n: 12, txt: 'Decidir quais ideias novas não serão usadas.' }
+                            ]
+                        },
+                        {
+                            id: 'E',
+                            full: 'Aperfeiçoando o clima organizacional.',
+                            color: '#1a6b5a',
+                            items: [
+                                { n: 13, txt: 'Estudar com o grupo sobre fofoca e lealdade.' },
+                                { n: 14, txt: 'Tratar um problema individualmente com alguém.' },
+                                { n: 15, txt: 'Resolver conflitos entre duas pessoas.' },
+                                { n: 16, txt: 'Celebrar vitórias e elogiar resultados.' }
+                            ]
+                        },
+                        {
+                            id: 'F',
+                            full: 'Aperfeiçoando as reuniões.',
+                            color: '#8B3a2e',
+                            items: [
+                                { n: 17, txt: 'Definir objetivos para as reuniões.' },
+                                { n: 18, txt: 'Dirigir as conversas para resolver os problemas.' },
+                                { n: 19, txt: 'Saber deixar algum assunto para depois.' },
+                                { n: 20, txt: 'Saber decidir e não deixar para depois.' }
+                            ]
+                        }
+                    ].map((sec, i) => {
+                        const bgColors = {
+                            'var(--navy)':  'rgba(0, 43, 73, 0.06)',
+                            'var(--amber)': 'rgba(224, 123, 42, 0.07)',
+                            'var(--gold)':  'rgba(212, 160, 23, 0.07)',
+                            '#3d7a35':      'rgba(61, 122, 53, 0.07)',
+                            '#1a6b5a':      'rgba(26, 107, 90, 0.07)',
+                            '#8B3a2e':      'rgba(139, 58, 46, 0.07)'
+                        };
+                        return (
+                            <div key={i} style={{ 
+                                borderLeft: `3.5px solid ${sec.color}`, 
+                                background: bgColors[sec.color] || 'rgba(0,0,0,0.02)',
+                                padding: '3px 10px', 
+                                borderRadius: '0 4px 4px 0'
+                            }}>
+                                <div style={{ display: 'flex', gap: '6px', alignItems: 'center', marginBottom: '1px' }}>
+                                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 'bold', color: sec.color }}>{sec.id}.</span>
+                                    <strong style={{ fontSize: '12px', color: 'var(--navy)', textTransform: 'uppercase', letterSpacing: '0.02em' }}>{sec.full}</strong>
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0px', paddingLeft: '20px' }}>
+                                    {sec.items.map((item, j) => (
+                                        <div key={j} style={{ display: 'grid', gridTemplateColumns: '18px 1fr 22px', gap: '6px', alignItems: 'center' }}>
+                                            <span style={{ fontSize: '12px', color: '#999', textAlign: 'right' }}>{item.n}.</span>
+                                            <span style={{ fontSize: '12px', color: 'var(--text)', lineHeight: '1.15' }}>{item.txt}</span>
+                                            <div style={{ borderBottom: '1px solid #ccc', height: '11px', width: '20px' }}></div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+
+                <div className="small-note" style={{ marginTop: 'auto' }}>
+                    (*) Pesquise na internet ou na I.A. cada um desses 20 itens listados acima e prepare microaulas de 15 minutos para usar no início de cada reunião de equipe.
+                </div>
+            </Page>
+        );
+
+        const P8_Situacional = () => {
+            const levels = [
+                { n: '1', title: 'DIZER', color: '#C0392B' },
+                { n: '2', title: 'INFLUENCIAR', color: '#E67E22' },
+                { n: '3', title: 'CONSULTAR', color: '#D4AC0D' },
+                { n: '4', title: 'PARTICIPAR', color: '#27AE60' },
+                { n: '5', title: 'ENTREGAR', color: '#16A085' }
+            ];
+
+            const content = [
+                {
+                    lider: <>O líder identifica o problema, define a solução que <strong>ele</strong> prefere e <strong>diz</strong> ao grupo o que fazer</>,
+                    equipe: <>O grupo ouve e segue</>,
+                    topHeight: '80%', bottomHeight: '20%'
+                },
+                {
+                    lider: <>O <strong>líder</strong> toma a decisão e <strong>persuade</strong> o grupo a segui-lo</>,
+                    equipe: <>O grupo é convencido e segue</>,
+                    topHeight: '70%', bottomHeight: '30%'
+                },
+                {
+                    lider: <>O líder <strong>consulta</strong> o grupo sobre as possíveis soluções para o problema</>,
+                    equipe: <>O grupo <strong>influencia</strong> as decisões desde o começo</>,
+                    topHeight: '60%', bottomHeight: '40%'
+                },
+                {
+                    lider: <>O líder <strong>participa</strong> e decide junto com o grupo</>,
+                    equipe: <>O grupo <strong>discute</strong> o assunto e <strong>toma as decisões junto</strong> com o líder.</>,
+                    topHeight: '50%', bottomHeight: '50%'
+                },
+                {
+                    lider: <>O líder define <strong>diretrizes</strong></>,
+                    equipe: <div style={{ paddingTop: '10px' }}>Seguindo as diretrizes, o grupo <strong>identifica</strong> o problema toma as <strong>decisões e implementa as ações</strong> necessárias.</div>,
+                    topHeight: '40%', bottomHeight: '60%'
+                }
+            ];
+
+            return (
+                <Page hdr="Liderança Situacional" num={8}>
+                    <div className="h1">Combinando<br />Pessoas e Situações</div>
+                    
+                    <div style={{ marginBottom: '12px' }}>
+                        <div style={{ fontSize: '13px', color: 'var(--navy)', fontWeight: 600, marginBottom: '4px' }}>
+                            Para liderar melhor, combine (a) o tipo de equipe com (b) o tipo de situação que está lidando
+                        </div>
+                        <div className="body" style={{ fontSize: '12px', lineHeight: 1.4 }}>
+                            No processo diário de liderar, você e sua equipe devem considerar duas variáveis:
+                            <ul style={{ paddingLeft: '18px', marginTop: '4px', marginBottom: '8px' }}>
+                                <li><strong>A equipe varia:</strong> tem pessoas maduras e imaturas, novas no trabalho e experientes, generalistas e especialistas, etc.</li>
+                                <li><strong>As situações variam:</strong> rotineiras, novos desafios, procedimentos indefinidos, imprevistos que exigem novas abordagens, etc.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div className="body" style={{ fontSize: '12px', marginBottom: '10px', textAlign: 'justify' }}>
+                        <strong>Gráfico:</strong> Compreenda as 5 abordagens descritas no gráfico abaixo onde as colunas combinam os dois elementos. 
+                        Você precisa saber qual abordagem usar dependendo da <strong>situação</strong> e do tipo de <strong>equipe</strong> que você tem disponível.
+                    </div>
+
+                    <div style={{ 
+                        display: 'grid', 
+                        gridTemplateColumns: 'repeat(5, 1fr)', 
+                        background: '#fff', 
+                        border: '1.5px solid #333',
+                        position: 'relative',
+                        marginBottom: '5px'
+                    }}>
+                        {/* Header Row */}
+                        {levels.map((h, i) => (
+                            <div key={i} style={{ 
+                                background: h.color, 
+                                color: '#fff', 
+                                padding: '6px 2px', 
+                                textAlign: 'center',
+                                zIndex: 20,
+                                borderBottom: '1.5px solid #333',
+                                borderRight: i < 4 ? '1px solid rgba(255,255,255,0.4)' : 'none'
+                            }}>
+                                <div style={{ fontSize: '11px', fontWeight: 800 }}>{h.n}</div>
+                                <div style={{ fontSize: '11px', fontWeight: 800, letterSpacing: '0.02em' }}>{h.title}</div>
+                            </div>
+                        ))}
+
+                        {/* Background Color Bars (Below Arrow) */}
+                        <div style={{
+                            position: 'absolute',
+                            top: '40px', // header height
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(5, 1fr)',
+                            zIndex: 1
+                        }}>
+                            {levels.map((h, i) => (
+                                <div key={i} style={{ 
+                                    background: h.color,
+                                    opacity: 0.12,
+                                    height: '100%',
+                                    clipPath: `polygon(0 ${85 - i * 10}%, 100% ${85 - (i + 1) * 10}%, 100% 100%, 0 100%)`
+                                }}></div>
+                            ))}
+                        </div>
+
+                        {/* Content Cells */}
+                        <div style={{
+                            gridColumn: '1 / -1',
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(5, 1fr)',
+                            position: 'relative',
+                            zIndex: 5
+                        }}>
+                            {content.map((cell, i) => (
+                                <div key={i} style={{ 
+                                    display: 'flex', 
+                                    flexDirection: 'column', 
+                                    height: '220px', 
+                                    borderRight: i < 4 ? '1px solid rgba(0,0,0,0.15)' : 'none'
+                                }}>
+                                    <div style={{ 
+                                        height: cell.topHeight,
+                                        padding: '12px 6px 8px 6px', 
+                                        fontSize: '11px', 
+                                        lineHeight: 1.25,
+                                        color: '#222',
+                                        textAlign: 'center',
+                                        display: 'flex',
+                                        alignItems: 'flex-start',
+                                        justifyContent: 'center'
+                                    }}>
+                                        <div>{cell.lider}</div>
+                                    </div>
+                                    <div style={{ 
+                                        height: cell.bottomHeight,
+                                        padding: '8px 6px', 
+                                        fontSize: '11px', 
+                                        lineHeight: 1.25,
+                                        color: '#222',
+                                        textAlign: 'center',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}>
+                                        <div>{cell.equipe}</div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Arrow & Label Layer */}
+                        <div style={{
+                            position: 'absolute',
+                            top: '40px',
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            pointerEvents: 'none',
+                            zIndex: 10
+                        }}>
+                            <svg width="100%" height="100%" style={{ overflow: 'visible' }}>
+                                <defs>
+                                    <marker id="arrowhead-final" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                                        <path d="M0,0 L6,3 L0,6 Z" fill="#111" />
+                                    </marker>
+                                </defs>
+                                <line x1="0" y1="85%" x2="100%" y2="35%" stroke="#111" strokeWidth="1.5" markerEnd="url(#arrowhead-final)" />
+                            </svg>
+                            <div style={{
+                                position: 'absolute',
+                                left: '6%',
+                                top: '176px', 
+                                transform: 'translateY(-100%) rotate(-14deg)',
+                                transformOrigin: 'left bottom',
+                                fontSize: '15px',
+                                fontWeight: 900,
+                                color: '#111',
+                                letterSpacing: '0.01em',
+                                whiteSpace: 'nowrap'
+                            }}>
+                                Participação da Equipe
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="small-note" style={{ marginTop: 'auto' }}>
+                        (a) Área branca: 5 atuações do líder · (b) Área colorida: 5 atuações da equipe.
+                    </div>
+                </Page>
+            );
+        };
+
+        const P9_Casos = () => {
+            const levelColors = ['#C0392B', '#E67E22', '#D4AC0D', '#27AE60', '#16A085'];
+            const cases = [
+                'Você descobre que há um incêndio no 5º andar. Sua equipe trabalha no 3º andar e você recebe a ordem de que todos precisam evacuar o prédio.',
+                'Um novo especialista chegou na sua equipe, com boa experiência em empresas anteriores e está começando na função. Há uma situação em que ele é especialista. Como você o trata diante da equipe?',
+                'Você é o diretor da empresa e está conversando com os seus gerentes sobre vários problemas e possibilidades do lançamento de um novo produto. Como você lida com os gerentes?',
+                'Você lidera a Equipe de Eventos da igreja e está discutindo com eles os detalhes de como será o encerramento de um programa. Como é que você lida com essa equipe?',
+                'Você é o regente de coral e precisa transmitir orientações detalhadas sobre como será a apresentação que farão no hospital. Como você trata o assunto diante dos 40 membros do coral?',
+                'Você é o pastor. Está com dúvidas técnicas e teológicas sobre pintar (ou não) o palco de preto na sua igreja para que o sistema de iluminação seja otimizado. Como você lida com os técnicos e com os membros da igreja?',
+                'Um produto não foi entregue ao cliente conforme combinado devido à grafia incorreta do endereço, prejudicando a imagem da organização que você lidera. Como você trata a equipe que lidou com todo o processo de empacotamento?',
+            ];
+
+            const hexToRgba = (hex, alpha) => {
+                const r = parseInt(hex.slice(1, 3), 16);
+                const g = parseInt(hex.slice(3, 5), 16);
+                const b = parseInt(hex.slice(5, 7), 16);
+                return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+            };
+
+            return (
+                <Page hdr="Análise de Casos" num={9}>
+                    <div className="h1" style={{ color: 'var(--navy)', marginBottom: '2px' }}>Análise de Casos</div>
+                    <div className="subtitle" style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text)', marginBottom: '4px' }}>
+                        Nos casos abaixo, você é o líder. O que fazer em cada caso?
+                    </div>
+                    
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+                        {cases.map((text, i) => (
+                            <div key={i} style={{ 
+                                display: 'flex', 
+                                flexDirection: 'column', 
+                                gap: '6px', 
+                                borderBottom: i < cases.length - 1 ? '1px solid #EAEAEA' : 'none', 
+                                paddingTop: i === 0 ? '0' : '6px',
+                                paddingBottom: i < cases.length - 1 ? '6px' : '0'
+                            }}>
+                                <div style={{ display: 'flex', gap: '6px', alignItems: 'flex-start' }}>
+                                    <div style={{ 
+                                        fontWeight: 800, 
+                                        color: 'var(--amber)', 
+                                        fontSize: '14px', 
+                                        minWidth: '16px',
+                                        lineHeight: 1.3
+                                    }}>{i + 1}.</div>
+                                    <div style={{ fontSize: '12px', lineHeight: 1.4, color: '#222', fontWeight: 500, textAlign: 'justify' }}>
+                                        {text}
+                                    </div>
+                                </div>
+                                <div style={{ 
+                                    display: 'flex', 
+                                    flexWrap: 'wrap', 
+                                    gap: '6px', 
+                                    justifyContent: 'center',
+                                    paddingLeft: '0' 
+                                }}>
+                                    {['Dizer', 'Influenciar', 'Consultar', 'Participar', 'Entregar'].map((opt, idx) => (
+                                        <div key={opt} style={{ 
+                                            display: 'flex', 
+                                            alignItems: 'center', 
+                                            gap: '4px', 
+                                            fontSize: '9px', 
+                                            color: levelColors[idx],
+                                            fontWeight: 700,
+                                            background: hexToRgba(levelColors[idx], 0.08),
+                                            padding: '3px 6px',
+                                            borderRadius: '4px',
+                                            border: `1px solid ${hexToRgba(levelColors[idx], 0.3)}`
+                                        }}>
+                                            <div style={{ 
+                                                width: '8px', 
+                                                height: '8px', 
+                                                borderRadius: '50%', 
+                                                border: `1.2px solid ${levelColors[idx]}`,
+                                                background: '#fff'
+                                            }}></div>
+                                            {opt}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Page>
+            );
+        };
+
+        const P10_DNA = () => {
+            return (
+                <Page hdr="Seu DNA de Líder" num={10}>
+                    <div className="h1" style={{ color: 'var(--navy)', textAlign: 'center', marginBottom: '1px', textTransform: 'uppercase' }}>Seu DNA de Líder</div>
+                    <div className="subtitle" style={{ textAlign: 'center', fontSize: '11px', fontWeight: 600, color: 'var(--text)', marginBottom: '8px' }}>
+                        Você precisa conhecer e desenvolver seu DNA de líder<br/>de modo a ter uma influência mais poderosa
+                    </div>
+
+                    <div style={{ marginRight: '4cm', paddingRight: '16px', borderRight: '2.5px solid var(--amber)', height: '100%', display: 'flex', flexDirection: 'column' }}>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '4px' }}>
+                            {/* Item 1 */}
+                            <div>
+                                <div style={{ display: 'flex', gap: '8px', alignItems: 'baseline' }}>
+                                    <strong style={{ fontSize: '12px', color: 'var(--amber)' }}>1.</strong>
+                                    <div className="body" style={{ fontSize: '12px', lineHeight: 1.35 }}>
+                                        <strong>Entenda o gráfico:</strong> o gráfico apresenta dois tipos de DNA de líderes, combinando relacionamentos com tarefas:
+                                    </div>
+                                </div>
+                                <div style={{ paddingLeft: '22px', marginTop: '2px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                                    <div style={{ display: 'flex', gap: '8px', alignItems: 'baseline' }}>
+                                        <span style={{ fontSize: '12px', fontWeight: 700, color: '#4F46E5' }}>a.</span>
+                                        <span className="body" style={{ fontSize: '12px', lineHeight: 1.3 }}>
+                                            <strong style={{ color: '#4F46E5' }}>Líder relacional:</strong> valoriza os relacionamentos e enfatiza menos as tarefas.
+                                        </span>
+                                    </div>
+                                    <div style={{ display: 'flex', gap: '8px', alignItems: 'baseline' }}>
+                                        <span style={{ fontSize: '12px', fontWeight: 700, color: '#D97706' }}>b.</span>
+                                        <span className="body" style={{ fontSize: '12px', lineHeight: 1.3 }}>
+                                            <strong style={{ color: '#D97706' }}>Líder producional:</strong> enfatiza as tarefas e valoriza menos os relacionamentos.
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Item 2 */}
+                            <div style={{ marginTop: '2px' }}>
+                                <div style={{ display: 'flex', gap: '8px', alignItems: 'baseline' }}>
+                                    <strong style={{ fontSize: '12px', color: 'var(--amber)' }}>2.</strong>
+                                    <div className="body" style={{ fontSize: '12px', lineHeight: 1.35 }}>
+                                        <strong>Para discussão:</strong>
+                                    </div>
+                                </div>
+                                <div style={{ paddingLeft: '22px', marginTop: '2px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                                    <div style={{ display: 'flex', gap: '8px', alignItems: 'baseline' }}>
+                                        <span style={{ fontSize: '11.5px', fontWeight: 700, color: 'var(--navy)' }}>a.</span>
+                                        <span className="body" style={{ fontSize: '11.5px', lineHeight: 1.3 }}>Qual é o seu DNA mais <i>natural</i>? E o DNA do seu cônjuge?</span>
+                                    </div>
+                                    <div style={{ display: 'flex', gap: '8px', alignItems: 'baseline' }}>
+                                        <span style={{ fontSize: '11.5px', fontWeight: 700, color: 'var(--navy)' }}>b.</span>
+                                        <span className="body" style={{ fontSize: '11.5px', lineHeight: 1.3 }}>O <i>seu líder</i> é mais relacional ou mais producional? Como tratar com ele?</span>
+                                    </div>
+                                    <div style={{ display: 'flex', gap: '8px', alignItems: 'baseline' }}>
+                                        <span style={{ fontSize: '11.5px', fontWeight: 700, color: 'var(--navy)' }}>c.</span>
+                                        <span className="body" style={{ fontSize: '11.5px', lineHeight: 1.3 }}>É possível <i>mudar</i> nosso estilo? Qual dos dois estilos é mais fácil de mudar?</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* The Graph */}
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 'auto', marginBottom: 'auto' }}>
+                            <svg viewBox="-30 0 360 235" style={{ width: '100%', maxHeight: '250px', display: 'block' }}>
+                                <defs>
+                                    <marker id="axis-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#333" />
+                                    </marker>
+                                    <marker id="ideal-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#059669" />
+                                    </marker>
+                                </defs>
+                                
+                                {/* Ideal Leader Arrow */}
+                                <line x1="40" y1="190" x2="195" y2="75" stroke="#059669" strokeWidth="1.5" markerEnd="url(#ideal-arrow)" />
+                                <text x="204" y="66" fontSize="9" fontWeight="700" fill="#059669">Como posso</text>
+                                <text x="204" y="77" fontSize="9" fontWeight="700" fill="#059669">ser um</text>
+                                <text x="204" y="88" fontSize="9" fontWeight="700" fill="#059669">líder ideal?</text>
+
+                                {/* Point A Dashed Lines */}
+                                <line x1="100" y1="190" x2="100" y2="30" stroke="#4F46E5" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.7" />
+                                <line x1="40" y1="30" x2="100" y2="30" stroke="#4F46E5" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.7" />
+                                
+                                {/* Point A Marker */}
+                                <circle cx="100" cy="30" r="8.5" fill="#4F46E5" />
+                                <rect x="117" y="19" width="22" height="22" fill="#fff" stroke="#4F46E5" strokeWidth="1.5" rx="3" />
+                                <text x="128" y="34.5" textAnchor="middle" fontSize="12" fontWeight="800" fill="#4F46E5">A</text>
+                                
+                                {/* Point A Text */}
+                                <text x="145" y="27" fontSize="9" fontWeight="700" fill="#444">Relacionamento</text>
+                                <text x="220" y="27" textAnchor="end" fontSize="9" fontWeight="800" fill="#222">12</text>
+                                <text x="145" y="39" fontSize="9" fontWeight="700" fill="#444">Tarefa</text>
+                                <text x="220" y="39" textAnchor="end" fontSize="9" fontWeight="800" fill="#222">3</text>
+                                
+                                {/* Point B Dashed Lines */}
+                                <line x1="280" y1="190" x2="280" y2="140" stroke="#D97706" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.7" />
+                                <line x1="40" y1="140" x2="280" y2="140" stroke="#D97706" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.7" />
+                                
+                                {/* Point B Marker */}
+                                <circle cx="280" cy="140" r="8.5" fill="#D97706" />
+                                <rect x="297" y="129" width="22" height="22" fill="#fff" stroke="#D97706" strokeWidth="1.5" rx="3" />
+                                <text x="308" y="144.5" textAnchor="middle" fontSize="12" fontWeight="800" fill="#D97706">B</text>
+                                
+                                {/* Point B Text */}
+                                 <text x="267" y="117" textAnchor="end" fontSize="9" fontWeight="700" fill="#444">Relacionamento</text>
+                                 <text x="282" y="117" textAnchor="end" fontSize="9" fontWeight="800" fill="#222">3</text>
+                                 <text x="267" y="129" textAnchor="end" fontSize="9" fontWeight="700" fill="#444">Tarefa</text>
+                                 <text x="282" y="129" textAnchor="end" fontSize="9" fontWeight="800" fill="#222">12</text>
+
+                                {/* Axes (Top Layer) */}
+                                <line x1="40" y1="190" x2="310" y2="190" stroke="#333" strokeWidth="2.5" markerEnd="url(#axis-arrow)" />
+                                <line x1="40" y1="190" x2="40" y2="10" stroke="#333" strokeWidth="2.5" markerEnd="url(#axis-arrow)" />
+                                
+                                {/* Axis Labels */}
+                                <text x="175" y="215" textAnchor="middle" fontSize="10.5" fontWeight="800" fill="#333">EIXO DA EXECUÇÃO DAS TAREFAS</text>
+                                <text x="-100" y="12" transform="rotate(-90)" textAnchor="middle" fontSize="10.5" fontWeight="800" fill="#333">EIXO DOS RELACIONAMENTOS</text>
+
+                                {/* Ticks and Labels */}
+                                {[2, 4, 6, 8, 10, 12].map(val => {
+                                    const x = 40 + val * 20;
+                                    const y = 190 - (val/12) * 160;
+                                    return (
+                                        <g key={val}>
+                                            {/* X-axis tick */}
+                                            <line x1={x} y1="187" x2={x} y2="193" stroke="#333" strokeWidth="2" />
+                                            <text x={x} y="202" textAnchor="middle" fontSize="9.5" fontWeight="800" fill="#555">{val}</text>
+                                            {/* Y-axis tick */}
+                                            <line x1="37" y1={y} x2="43" y2={y} stroke="#333" strokeWidth="2" />
+                                            <text x="31" y={y + 3.5} textAnchor="end" fontSize="9.5" fontWeight="800" fill="#555">{val}</text>
+                                        </g>
+                                    );
+                                })}
+                            </svg>
+                        </div>
+                    </div>
+
+                    {/* Note */}
+                    <div className="small-note" style={{ fontSize: '10px', lineHeight: 1.35, color: '#475569', marginTop: 'auto', paddingTop: '4px' }}>
+                            (*) Faça esse estudo com a sua equipe. Isso ajudará a todos a se compreenderem melhor. Mas lembre-se que, mesmo tendo um DNA mais natural, todos nós podemos crescer aprendendo o “outro” lado tão necessário para nossa maturidade.
+                        </div>
+
+                </Page>
+            );
+        };
+
+        const P11_AutoDNA = () => {
+            const list = [
+                ['Foco obstinado nos relacionamentos', 'Foco obstinado nos planos e nas metas'],
+                ['Comunicação subjetiva e ponderada', 'Comunicação objetiva e direta'],
+                ['Atitude de compaixão e misericórdia', 'Atitude de comando e controle'],
+                ['Valoriza mais as pessoas do que os objetivos', 'Valoriza mais os objetivos do que as pessoas'],
+                ['Inspira as pessoas para atingirem seu potencial', 'Conduz as pessoas para os objetivos definidos'],
+                ['Usa a sua influência para convencer as pessoas', 'Exerce a sua autoridade para mobilizar as pessoas'],
+                ['Dá prioridade ao bem-estar da equipe', 'Dá prioridade à execução das tarefas'],
+                ['Decide baseado no que o grupo sente', 'Decide baseado no que precisa ser feito'],
+                ['Preocupa-se em como o grupo trabalha junto', 'Preocupa-se com a qualidade dos resultados'],
+                ['Sou mais motivador', 'Sou mais administrador']
+            ];
+
+            return (
+                <Page hdr="Autoavaliação" num={11}>
+                    <div className="h1" style={{ marginBottom: 2 }}>Autoavaliação</div>
+                    <div className="subtitle" style={{ fontSize: 12.5, marginBottom: 8, fontWeight: 500 }}>Assinale os itens que melhor descrevem você:</div>
+                    
+                    <div className="body" style={{fontSize: 12, marginBottom: 12, lineHeight: 1.45, color: '#334155'}}>
+                        Ninguém tem apenas um jeito único de ser; somos uma combinação de várias características. Por favor, marque com um "x" os itens de qualquer coluna ou ambas que indicam a sua <strong>tendência natural</strong>, ou seja, o seu DNA pessoal.
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingLeft: '8px', paddingRight: '8px' }}>
+                        {list.map(([left, right], i) => (
+                            <div key={i} style={{ display: 'grid', gridTemplateColumns: '16px 1fr 1fr', gap: '16px', alignItems: 'start' }}>
+                                {/* Number */}
+                                <div style={{ fontSize: '10px', color: '#94A3B8', textAlign: 'right', paddingTop: '3px', fontWeight: '700' }}>{String(i + 1).padStart(2, '0')}.</div>
+                                
+                                {/* Left Item (Subtle Indigo accent) */}
+                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                                    <div style={{ flexShrink: 0, width: 14, height: 14, border: '1.5px solid #818CF8', borderRadius: '3px', background: '#F5F3FF' }} />
+                                    <div style={{ fontSize: '12px', lineHeight: 1.35, color: '#1E293B' }}>{left}</div>
+                                </div>
+                                
+                                {/* Right Item (Subtle Amber accent) */}
+                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                                    <div style={{ flexShrink: 0, width: 14, height: 14, border: '1.5px solid #FBBF24', borderRadius: '3px', background: '#FFFBEB' }} />
+                                    <div style={{ fontSize: '12px', lineHeight: 1.35, color: '#1E293B' }}>{right}</div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div style={{ marginTop: 'auto', marginBottom: '15px', border: '1.5px dashed #CBD5E1', borderRadius: '8px', background: '#F8FAFC', padding: '5px 16px 16px 16px', height: '125px', display: 'flex', flexDirection: 'column' }}>
+                        <div style={{ color: '#0F172A', fontSize: '12px', textAlign: 'center', fontWeight: 'bold' }}>Escolha dois itens que você poderia aperfeiçoar</div>
+                    </div>
+                </Page>
+            );
+        };
+
+        const P12_Alinhamento = () => {
+            return (
+                <Page hdr="Alinhamento de Equipe" num={12}>
+                    <div className="h1" style={{ marginBottom: '6px' }}>Alinhamento<br />de Equipe</div>
+                    <div className="body" style={{ fontSize: '12px', lineHeight: 1.3, marginBottom: '10px', color: '#334155', fontStyle: 'italic', textAlign: 'justify' }}>
+                        Você precisa avaliar o progresso da sua organização e promover o alinhamento das pessoas rumo à visão.
+                    </div>
+
+                    <div style={{ fontWeight: 'bold', fontSize: '12px', color: '#000', marginBottom: '4px' }}>1. Três tipos de pessoas na sua equipe:</div>
+                    
+                    <div style={{ display: 'grid', gridTemplateColumns: '62px 1fr', gap: '12px', marginBottom: '10px', alignItems: 'center' }}>
+                        <img src="../docx_images/image6.png" style={{ width: 62, objectFit: 'contain' }} />
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                            {[
+                                { bg: 'rgba(239, 68, 68, 0.08)', border: '#ef4444', color: '#991b1b', label: 'Contrários', text: '(vermelho) Pessoas tóxicas: semeiam discórdia, são desleais e emperram a produtividade.' },
+                                { bg: 'rgba(234, 179, 8, 0.08)', border: '#eab308', color: '#854d0e', label: 'Divergentes', text: '(amarelo) Pessoas que discutem as decisões. Podem ajudar ou divergir muito no futuro.' },
+                                { bg: 'rgba(34, 197, 94, 0.08)', border: '#22c55e', color: '#166534', label: 'Alinhados', text: '(verde) Pessoas que conhecem e estão comprometidas com a visão, metas e valores.' }
+                            ].map((t, i) => (
+                                <div key={i} style={{ background: t.bg, borderLeft: `3px solid ${t.border}`, padding: '6px 10px', borderRadius: '0 4px 4px 0' }}>
+                                    <div className="body" style={{ fontSize: '12px', lineHeight: 1.35, color: '#1e293b', textAlign: 'justify' }}>
+                                        <strong style={{ color: t.color }}>{t.label}: </strong>{t.text}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div style={{ marginBottom: '10px' }}>
+                        <div style={{ fontWeight: 'bold', fontSize: '12px', color: '#000', marginBottom: '4px' }}>2. Compreenda:</div>
+                        <div style={{ paddingLeft: '12px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                            <div className="body" style={{ fontSize: '12px', color: '#1e293b', textAlign: 'justify' }}>a. O <strong>significado</strong> dos alinhados, divergentes e contrários.</div>
+                            <div className="body" style={{ fontSize: '12px', color: '#1e293b', textAlign: 'justify' }}>b. Indique o <strong>número</strong> de pessoas de cada tipo em sua equipe.</div>
+                            <div className="body" style={{ fontSize: '12px', color: '#1e293b', textAlign: 'justify' }}>c. Que <strong>problemas</strong> sua equipe enfrentou com contrários/divergentes nos últimos 6 meses?</div>
+                        </div>
+                    </div>
+
+                    <img src="../docx_images/image7.png" style={{ width: '90%', display: 'block', margin: '0 auto', objectFit: 'contain' }} />
+                </Page>
+            );
+        };
+
+        const SectionHeader = ({ letter, title }) => (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px', marginBottom: '6px' }}>
+                <div style={{ background: 'var(--navy)', color: '#fff', width: '22px', height: '22px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '4px', fontFamily: 'var(--font-mono)', fontWeight: 'bold', fontSize: '12px', flexShrink: 0 }}>
+                    {letter}
+                </div>
+                <div style={{ color: 'var(--navy)', fontWeight: 'bold', fontSize: '13.5px', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+                    {title}
+                </div>
+            </div>
+        );
+
+        const AlignItem = ({ num, title, children }) => (
+            <div style={{ display: 'flex', gap: '10px', marginBottom: '8px' }}>
+                <div style={{ color: 'var(--amber)', fontFamily: 'var(--font-mono)', fontWeight: 'bold', fontSize: '14px', flexShrink: 0, width: '20px', textAlign: 'right' }}>
+                    {num}.
+                </div>
+                <div className="body" style={{ fontSize: '12px', lineHeight: 1.35, textAlign: 'justify' }}>
+                    <strong style={{ color: '#000' }}>{title}: </strong>
+                    {children}
+                </div>
+            </div>
+        );
+
+        const P13_Alinhamento = () => (
+            <Page hdr="Matéria: Liderança Eficaz" num={13}>
+                <div style={{ textAlign: 'center', marginBottom: '14px' }}>
+                    <div className="h1" style={{ marginBottom: '4px' }}>Alinhando a sua Equipe</div>
+                    <div className="body" style={{ fontSize: '12px', fontStyle: 'italic', color: '#334155', maxWidth: '100%', margin: '0 auto' }}>
+                        Considere a equipe que você lidera e constantemente aplique essas 15 sugestões para alinhá-la.
+                    </div>
+                </div>
+
+                <div style={{ marginLeft: '4.5cm', paddingLeft: '12px', borderLeft: '2.5px solid var(--amber)' }}>
+                    <SectionHeader letter="A" title="Progresso: Análise dos últimos três anos." />
+                    <AlignItem num={1} title="Avaliação do Progresso">Determine se o progresso foi alto, médio ou fraco, considerando metas atingidas e crescimento. Essa análise é fundamental para ajustar estratégias e focar em melhorias contínuas.</AlignItem>
+                    <AlignItem num={2} title="Fatores Positivos">Identifique os elementos que impulsionaram o progresso, como inovações, liderança eficaz ou estratégias bem-sucedidas, e busque replicá-los.</AlignItem>
+                    <AlignItem num={3} title="Fatores Limitantes">Identifique os obstáculos que dificultaram o progresso, como recursos insuficientes, falhas de comunicação, ou pessoas problemáticas e elabore planos de ação corretivos.</AlignItem>
+                    <AlignItem num={4} title="Problemas com Processos ou Pessoas">Avalie se os desafios foram mais relacionados a <u style={{ textDecorationColor: 'var(--navy)', textUnderlineOffset: '2px' }}>processos</u> ineficientes ou a problemas <u style={{ textDecorationColor: 'var(--navy)', textUnderlineOffset: '2px' }}>interpessoais</u>, direcionando ações específicas para cada área.</AlignItem>
+
+                    <SectionHeader letter="B" title="Visão e Metas." />
+                    <AlignItem num={5} title="Clareza e Compreensão">Assegure que suas metas são claras, compreendidas e <u style={{ textDecorationColor: 'var(--navy)', textUnderlineOffset: '2px' }}>defendidas</u> por todos. Realize reuniões regulares para discutir e ajustar metas, promovendo o alinhamento.</AlignItem>
+                </div>
+            </Page>
+        );
+
+        const P14_Alinhamento = () => (
+            <Page hdr="Matéria Liderança Eficaz" num={14}>
+                <div style={{ marginRight: '4.5cm', paddingRight: '12px', borderRight: '2.5px solid var(--amber)' }}>
+                    <div style={{ marginTop: '10px' }}>
+                        <AlignItem num={6} title="Comunicação Constante">Use a visão e as metas como ferramentas de comunicação <u style={{ textDecorationColor: 'var(--navy)', textUnderlineOffset: '2px' }}>regular</u>, integrando-as em reuniões e relatórios, para manter o foco e a motivação.</AlignItem>
+                        <AlignItem num={7} title="Liderança Inspiradora">Reflita sobre o seu papel como líder. Inspire sua equipe a seguir a visão por meio de exemplos práticos, entusiasmo e reconhecimento das contribuições individuais.</AlignItem>
+                    </div>
+
+                    <SectionHeader letter="C" title="Discernimento sobre as Pessoas." />
+                    <AlignItem num={8} title="Identificação dos Divergentes">Identifique membros da equipe com opiniões <u style={{ textDecorationColor: 'var(--navy)', textUnderlineOffset: '2px' }}>divergentes</u> e trabalhe para entender suas perspectivas, prevenindo conflitos futuros. Se a pessoa for <u style={{ textDecorationColor: 'var(--navy)', textUnderlineOffset: '2px' }}>tóxica</u>, tome as providências.</AlignItem>
+                    <AlignItem num={9} title="Necessidade de Mudanças">Avalie se é necessário <u style={{ textDecorationColor: 'var(--navy)', textUnderlineOffset: '2px' }}>reestruturar</u> a equipe para manter a harmonia e eficiência, considerando tanto o desempenho quanto a cultura organizacional. Talvez seja necessário <u style={{ textDecorationColor: 'var(--navy)', textUnderlineOffset: '2px' }}>despedir</u> a pessoa tóxica que atrapalha a equipe.</AlignItem>
+
+                    <SectionHeader letter="D" title="Compreendendo Divergências." />
+                    <AlignItem num={10} title="Compreensão">Investigue se a causa das divergências é a <u style={{ textDecorationColor: 'var(--navy)', textUnderlineOffset: '2px' }}>falta de compreensão</u> das diretrizes ou objetivos. Ofereça treinamento e esclarecimentos quando necessário.</AlignItem>
+                    <AlignItem num={11} title="Ferramentas">Avalie se as divergências nascem da <u style={{ textDecorationColor: 'var(--navy)', textUnderlineOffset: '2px' }}>falta das ferramentas de trabalho</u> necessárias para o desempenho eficaz. Invista em recursos e treinamentos para suprir essas lacunas.</AlignItem>
+                </div>
+            </Page>
+        );
+
+        const P15_Alinhamento = () => (
+            <Page hdr="Matéria: Liderança Eficaz" num={15}>
+                <div style={{ marginLeft: '4.5cm', paddingLeft: '12px', borderLeft: '2.5px solid var(--amber)' }}>
+                    <div style={{ marginTop: '10px' }}>
+                        <AlignItem num={12} title="Caráter">Descubra se as divergências estão relacionadas a <u style={{ textDecorationColor: 'var(--navy)', textUnderlineOffset: '2px' }}>falta de caráter</u>. Considere intervenções mais profundas, e, em casos extremos, reavaliação de compatibilidade com a equipe. Há pessoas que não podem permanecer na equipe e você precisa ter coragem e sabedoria para dispensá-las.</AlignItem>
+                    </div>
+
+                    <SectionHeader letter="E" title="Retenção de Talentos." />
+                    <AlignItem num={13} title="Reforço da Visão">Reforce regularmente a visão da organização. Isso pode ser feito nas reuniões semanais, em workshops, comunicações internas e celebrações de marcos importantes.</AlignItem>
+                    <AlignItem num={14} title="Valorização de Ideias">Crie um ambiente onde ideias inovadoras são bem-vindas e valorizadas, promovendo sessões de brainstorming e implementando as melhores sugestões. E também saiba quais novas ideias não devem ser implementadas.</AlignItem>
+                    <AlignItem num={15} title="Recompensas Merecidas">Estabeleça um sistema de reconhecimento justo e motivador, recompensando tanto o desempenho excepcional quanto a contribuição <u style={{ textDecorationColor: 'var(--navy)', textUnderlineOffset: '2px' }}>contínua</u>, para fortalecer a cultura de mérito.</AlignItem>
+                </div>
+            </Page>
+        );
+
+        const P16_Blank = () => (
+            <div className="page page-16">
+                {/* Página totalmente em branco */}
+            </div>
+        );
+
+        // ─── APP ───────────────────────────────────────────────────────────────────
+
+        function App() {
+            useEffect(() => {
+                // Insert HTML comments into DOM for verification
+                document.querySelectorAll('.page').forEach((el, i) => {
+                    if (el.previousSibling?.nodeType !== 8) { // 8 is COMMENT_NODE
+                        el.parentNode.insertBefore(document.createComment(` Página ${i + 1} `), el);
+                    }
+                });
+            }, []);
+
+            return (
+                <div className="stage">
+                    {/* Página 1 */}
+                    <div id="p1" className="page-wrapper"><P1_Cover /></div>
+
+                    {/* Página 2 */}
+                    <div id="p2" className="page-wrapper"><P2_Info /></div>
+
+                    {/* Página 3 */}
+                    <div id="p3" className="page-wrapper"><P3_LiderQueDeusQuer /></div>
+
+                    {/* Página 4 */}
+                    <div id="p4" className="page-wrapper"><P4_Influencia /></div>
+
+                    {/* Página 5 */}
+                    <div id="p5" className="page-wrapper"><P5_Autoavaliacao /></div>
+
+                    {/* Página 6 */}
+                    <div id="p6" className="page-wrapper"><P6_GTVsEquipe /></div>
+
+                    {/* Página 7 */}
+                    <div id="p7" className="page-wrapper"><P7_Transformacao /></div>
+
+                    {/* Página 8 */}
+                    <div id="p8" className="page-wrapper"><P8_Situacional /></div>
+
+                    {/* Página 9 */}
+                    <div id="p9" className="page-wrapper"><P9_Casos /></div>
+
+                    {/* Página 10 */}
+                    <div id="p10" className="page-wrapper"><P10_DNA /></div>
+
+                    {/* Página 11 */}
+                    <div id="p11" className="page-wrapper"><P11_AutoDNA /></div>
+
+                    {/* Página 12 */}
+                    <div id="p12" className="page-wrapper"><P12_Alinhamento /></div>
+
+                    {/* Página 13 */}
+                    <div id="p13" className="page-wrapper"><P13_Alinhamento /></div>
+
+                    {/* Página 14 */}
+                    <div id="p14" className="page-wrapper"><P14_Alinhamento /></div>
+
+                    {/* Página 15 */}
+                    <div id="p15" className="page-wrapper"><P15_Alinhamento /></div>
+
+                    {/* Página 16 */}
+                    <div id="p16" className="page-wrapper"><P16_Blank /></div>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+        // Auto-print delay
+        setTimeout(() => {
+            if (window.location.search.includes('print')) window.print();
+        }, 1000);
+    </script>
+</body>
+
+</html>
