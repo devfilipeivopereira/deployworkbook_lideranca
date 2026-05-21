@@ -8,8 +8,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap"
         rel="stylesheet">
-    <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+    <link rel="icon" href="data:,">
+    <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
     <style>
         /* ── RESET & BASE ── */
@@ -596,7 +597,7 @@
         const { useState, useEffect } = React;
 
         const Logo = ({ style }) => (
-            <img src="../docx_images/image1.png" alt="Haggai Brasil" style={style} />
+            <img src="assets/images/image1.png" alt="Haggai Brasil" style={style} />
         );
 
         const Page = ({ hdr, num, children }) => {
@@ -687,7 +688,7 @@
                         </div>
                     </div>
                     <div style={{ flex: 1.2 }}>
-                        <img src="../docx_images/image2.png" style={{ width: '100%', maxHeight: '120px', objectFit: 'contain' }} />
+                        <img src="assets/images/image2.png" style={{ width: '100%', maxHeight: '120px', objectFit: 'contain' }} />
                     </div>
                 </div>
 
@@ -795,7 +796,7 @@
                     </div>
                 </div>
 
-                <img src="../docx_images/image3.png" style={{ width: '100%', maxHeight: '202px', objectFit: 'contain', margin: '2px 0', clipPath: 'inset(0 0 0 10px)', mixBlendMode: 'multiply' }} />
+                <img src="assets/images/image3.png" style={{ width: '100%', maxHeight: '202px', objectFit: 'contain', margin: '2px 0', clipPath: 'inset(0 0 0 10px)', mixBlendMode: 'multiply' }} />
 
                 <div style={{ marginTop: '4px' }}>
                     <strong className="subtitle" style={{ display: 'block', color: 'var(--navy)', marginBottom: '4px', fontSize: '12px' }}>Quatro pontos importantes:</strong>
@@ -1691,7 +1692,7 @@
                     <div style={{ fontWeight: 'bold', fontSize: '12px', color: '#000', marginBottom: '4px' }}>1. Três tipos de pessoas na sua equipe:</div>
                     
                     <div style={{ display: 'grid', gridTemplateColumns: '62px 1fr', gap: '12px', marginBottom: '10px', alignItems: 'center' }}>
-                        <img src="../docx_images/image6.png" style={{ width: 62, objectFit: 'contain' }} />
+                        <img src="assets/images/image6.png" style={{ width: 62, objectFit: 'contain' }} />
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                             {[
                                 { bg: 'rgba(239, 68, 68, 0.08)', border: '#ef4444', color: '#991b1b', label: 'Contrários', text: '(vermelho) Pessoas tóxicas: semeiam discórdia, são desleais e emperram a produtividade.' },
@@ -1716,7 +1717,7 @@
                         </div>
                     </div>
 
-                    <img src="../docx_images/image7.png" style={{ width: '90%', display: 'block', margin: '0 auto', objectFit: 'contain' }} />
+                    <img src="assets/images/image7.png" style={{ width: '90%', display: 'block', margin: '0 auto', objectFit: 'contain' }} />
                 </Page>
             );
         };

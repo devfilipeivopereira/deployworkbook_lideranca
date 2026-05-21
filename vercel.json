@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/Workbook_Lideranca_padrao.html"
+    }
+  ]
+}
